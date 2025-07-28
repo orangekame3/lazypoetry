@@ -1,0 +1,104 @@
+project_name: lazypoetry
+
+before:
+  hooks:
+    - go mod tidy
+    - go generate ./...
+
+builds:
+  - env:
+      - CGO_ENABLED=0
+    goos:
+      - linux
+      - windows
+      - darwin
+    goarch:
+      - "386"
+      - amd64
+      - arm
+      - arm64
+    goarm:
+      - "7"
+    ignore:
+      - goos: windows
+        goarch: arm
+      - goos: windows
+        goarch: arm64
+    main: .
+    binary: lazypoetry
+    ldflags:
+      - -s -w -X github.com/orangekame3/lazypoetry/cmd.Version={{.Version}}
+
+archives:
+  - format: tar.gz
+    name_template: >-
+      {{ .ProjectName }}_
+      {{- title .Os }}_
+      {{- if eq .Arch "amd64" }}x86_64
+      {{- else if eq .Arch "386" }}i386
+      {{- else }}{{ .Arch }}{{ end }}
+      {{- if .Arm }}v{{ .Arm }}{{ end }}
+    format_overrides:
+      - goos: windows
+        format: zip
+    files:
+      - README.md
+      - LICENSE*
+
+checksum:
+  name_template: "checksums.txt"
+
+snapshot:
+  name_template: "{{ incpatch .Version }}-next"
+
+changelog:
+  sort: asc
+  filters:
+    exclude:
+      - "^docs:"
+      - "^test:"
+      - "^ci:"
+      - "^chore:"
+      - "^style:"
+      - "^refactor:"
+  groups:
+    - title: Features
+      regexp: '^.*?feat(\([[:word:]]+\))??!?:.+$'
+      order: 0
+    - title: Bug fixes
+      regexp: '^.*?fix(\([[:word:]]+\))??!?:.+$'
+      order: 1
+    - title: Others
+      order: 999
+
+release:
+  github:
+    owner: orangekame3
+    name: lazypoetry
+  draft: false
+  prerelease: auto
+  name_template: "{{.ProjectName}} {{.Version}}"
+  header: |
+    ## What's Changed
+  footer: |
+    ## Installation
+    
+    ### Go install
+    ```bash
+    go install github.com/orangekame3/lazypoetry@{{.Version}}
+    ```
+    
+    ### Download binary
+    Download the appropriate binary for your platform from the assets below.
+
+brews:
+  - repository:
+      owner: orangekame3
+      name: homebrew-tap
+    homepage: https://github.com/orangekame3/lazypoetry
+    description: A lazy poetry generator and reader CLI tool
+    license: MIT
+    test: |
+      system "#{bin}/lazypoetry version"
+    install: |
+      bin.install "lazypoetry"

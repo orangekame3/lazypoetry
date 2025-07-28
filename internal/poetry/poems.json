@@ -1,0 +1,30 @@
+[
+  {
+    "id": 1,
+    "title": "Morning Dew",
+    "author": "Anonymous",
+    "form": "haiku",
+    "content": "Morning dew falls soft\nOn petals of cherry bloom\nSpring awakens slow"
+  },
+  {
+    "id": 2,
+    "title": "City Lights",
+    "author": "Anonymous", 
+    "form": "haiku",
+    "content": "Neon lights flicker\nThrough windows of sleepless nights\nUrban dreams take flight"
+  },
+  {
+    "id": 3,
+    "title": "The Lazy Cat",
+    "author": "Anonymous",
+    "form": "limerick", 
+    "content": "There once was a cat quite lazy\nWhose napping made everyone crazy\nIt slept through the day\nIn a comfortable way\nAnd dreamed of fish that were hazy"
+  },
+  {
+    "id": 4,
+    "title": "Ocean Waves",
+    "author": "Anonymous",
+    "form": "haiku",
+    "content": "Endless waves crash down\nAgainst the weathered shoreline\nTimeless rhythm flows"
+  }
+]
