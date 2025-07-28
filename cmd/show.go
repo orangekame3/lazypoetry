@@ -19,14 +19,14 @@ var showCmd = &cobra.Command{
 			fmt.Printf("Error: '%s' is not a valid poem ID. Please provide a number.\n", args[0])
 			return
 		}
-		
+
 		poem, err := poetry.GetPoem(id)
 		if err != nil {
 			fmt.Printf("Error: %s\n", err)
 			fmt.Println("\nUse 'lazypoetry list' to see available poems.")
 			return
 		}
-		
+
 		fmt.Printf("\n%s\n", poem.Title)
 		fmt.Printf("by %s (%s)\n", poem.Author, poem.Form)
 		fmt.Println("────────────────────")

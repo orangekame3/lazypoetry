@@ -30,11 +30,11 @@ Perfect for when you need a quick dose of creativity or inspiration!`,
 		if noUpdate {
 			return nil
 		}
-		
+
 		// Create context with timeout for version check
 		ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 		defer cancel()
-		
+
 		// Check for updates using vercheck
 		vercheck.CheckWithContext(ctx, vercheck.Options{
 			CurrentVersion: Version,
@@ -42,7 +42,7 @@ Perfect for when you need a quick dose of creativity or inspiration!`,
 			RepoName:       repoName,
 			Silent:         true, // Don't log errors to avoid noise
 		})
-		
+
 		return nil
 	},
 }

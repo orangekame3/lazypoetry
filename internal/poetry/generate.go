@@ -7,9 +7,8 @@ import (
 	"time"
 )
 
-func init() {
-	rand.Seed(time.Now().UnixNano())
-}
+// rng is the package-local pseudo-random generator
+var rng = rand.New(rand.NewSource(time.Now().UnixNano()))
 
 var haikuLines5 = []string{
 	"Morning dew falls soft",
@@ -42,8 +41,8 @@ var limerickTemplates = [][]string{
 		"And %s with a smile most %s",
 	},
 	{
-		"A %s from the town quite %s",
-		"Had a habit of being %s",
+		"A %s from %s",
+		"Had a habit quite %s",
 		"They would %s and %s",
 		"Without any care",
 		"And everyone thought it was %s",
@@ -56,29 +55,34 @@ var verbs = []string{"write", "dream", "sing", "dance", "read", "think", "wander
 var places = []string{"Maine", "Spain", "Lane", "Plain", "Cane", "Rain"}
 
 func GenerateHaiku() string {
-	line1 := haikuLines5[rand.Intn(len(haikuLines5))]
-	line2 := haikuLines7[rand.Intn(len(haikuLines7))]
-	line3 := haikuLines5[rand.Intn(len(haikuLines5))]
-	
+	line1 := haikuLines5[rng.Intn(len(haikuLines5))]
+	line2 := haikuLines7[rng.Intn(len(haikuLines7))]
+	line3 := haikuLines5[rng.Intn(len(haikuLines5))]
+
 	return strings.Join([]string{line1, line2, line3}, "\n")
 }
 
 func GenerateLimerick() string {
-	template := limerickTemplates[rand.Intn(len(limerickTemplates))]
-	
-	noun := nouns[rand.Intn(len(nouns))]
-	adj1 := adjectives[rand.Intn(len(adjectives))]
-	adj2 := adjectives[rand.Intn(len(adjectives))]
-	verb1 := verbs[rand.Intn(len(verbs))]
-	verb2 := verbs[rand.Intn(len(verbs))]
-	verb3 := verbs[rand.Intn(len(verbs))]
-	
+	template := limerickTemplates[rng.Intn(len(limerickTemplates))]
+
+	noun := nouns[rng.Intn(len(nouns))]
+	adj1 := adjectives[rng.Intn(len(adjectives))]
+	adj2 := adjectives[rng.Intn(len(adjectives))]
+	verb1 := verbs[rng.Intn(len(verbs))]
+	verb2 := verbs[rng.Intn(len(verbs))]
+	verb3 := verbs[rng.Intn(len(verbs))]
+	place := places[rng.Intn(len(places))]
+
 	// Simple word substitution
 	result := make([]string, len(template))
 	for i, line := range template {
 		switch i {
 		case 0:
-			result[i] = fmt.Sprintf(line, noun, adj1)
+			if strings.Contains(line, "A %s from %s") {
+				result[i] = fmt.Sprintf(line, noun, place)
+			} else {
+				result[i] = fmt.Sprintf(line, noun, adj1)
+			}
 		case 1:
 			if strings.Contains(line, "Who %s") {
 				result[i] = fmt.Sprintf(line, verb1, adj2)
@@ -101,7 +105,7 @@ func GenerateLimerick() string {
 			}
 		}
 	}
-	
+
 	return strings.Join(result, "\n")
 }
 
